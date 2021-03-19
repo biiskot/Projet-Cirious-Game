@@ -1,13 +1,11 @@
-let player = new joueur("bob");
-player = new inventaire();
+let player1 = new inventaire('bob');
 
-console.log(player.pseudo);
-//let Map1 = new Map(20,20);
+console.log(player1.pseudo);
+let Map1 = new Map(20,20,player1);
 
-//let testTerre = new ParceTerre();
+let testTerre = new ParceTerre();
 //Map.placerParcelle(1,1,testTerre); // Place une parcelle de terre en (1,1)
-
-//testTerre.launchPousse(player.carotte, testTerre);
+testTerre.launchPousse(player1.carotte, testTerre);
 
 
 /*

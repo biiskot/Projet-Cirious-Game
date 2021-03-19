@@ -1,5 +1,5 @@
 class Map {
-  constructor(longueur, largeur){
+  constructor(longueur, largeur, player){
     this.tabMap = new Array(longueur);
 
     //Création Map tab 2 dimensions
@@ -10,7 +10,7 @@ class Map {
     //Initialiser toutes les cases en herbe :
     for (var i = 0; i < longueur.length; i++) {
       for (var j = 0; j < largeur.length; j++) {
-        this.tabMap[i][j] = new Parcelle(1,1); // de base herbe dans le constructor de Parcelle()
+        this.tabMap[i][j] = new Parcelle(1,1,player); // de base herbe dans le constructor de Parcelle()
       }
       afficherMap();
     }
@@ -31,15 +31,15 @@ class Map {
 
 
 
-class Parcelle {
+class Parcelle{
   //Attributs d'une parcelle :
 
-
-  constructor(hauteur,largeur){
+  constructor(hauteur,largeur,player){
     this.hauteur = hauteur;
     this.largeur = largeur;
     this.appearance = 'herbe.png';
     this.plantable = false;
+    this.player = player;
   }
 
   afficherParcelle(indiceX, indiceY,map){
@@ -57,12 +57,10 @@ class ParceTerre extends Parcelle {
 
   launchPousse(graine, parcelledeterre){
     //graine = new Carotte();
-    parcelledeterre = new ParcePousse(graine, parcelledeterre);
+    parcelledeterre = new ParcePousse(graine, parcelledeterre, this.player);
 
   }
 }
-
-
 
 function wait(i) {
   setTimeout(function() {
@@ -70,12 +68,15 @@ function wait(i) {
 }
 
 class ParcePousse extends Parcelle {
-  this.graineChoisie;
-  this.pousseFinie = false;
-  this.timerPousse = 0;
+
 
   constructor(graine,parcelle){
     super(1,1);
+
+    this.graineChoisie;
+    this.pousseFinie = false;
+    this.timerPousse = 0;
+
     if(parcelle.plantable == true){
       parcelle.appearance = 'pousses.png'
       this.graineChoisie = graine;
@@ -89,7 +90,7 @@ class ParcePousse extends Parcelle {
   }
 
   poussePlante(parcellequipousse){
-    while (this.timerPousse < this.graineChoisie.growTime) { // Si le timer est inférieur au temps de pousse
+    while (this.timerPousse < this.player.graineChoisie.growTime && this.pousseFinie == false) { // Si le timer est inférieur au temps de pousse
     wait(i); //attendre une seconde
      this.timerPousse++; // timer += 1 seconde
   }
@@ -102,15 +103,10 @@ class ParcePousse extends Parcelle {
       this.appearance = 'poussesFinies.png'
 
       parcellePrete.onclick = function(){
-        //joueur.solde += this.graineChoisie.reward; // ajoute au solde du joueur la récompense définie dans la classe de la graine
-        //joueur.inventaire // Nouvelle case tableau qui ajoute les carotte ou patates...
-        console.log("récolte effectuée, or gagné :" + this.graineChoisie.reward + " nouveau solde = " + joueur.solde);
+        this.player.Ajouter_Obj_Recolté(graineChoisie.name,graineChoisie.nb_recolte); // ajoute le produit fini à l'inventaire
+        console.log("récolte effectuée, Vous avez gagné  = " + this.player.solde);
       }; // Donne de l'argent et les ressources au joueur (classe Player) au moment du clic sur la parcelle passée en parametre
     }
   }
 
 }
-
-
-
-
