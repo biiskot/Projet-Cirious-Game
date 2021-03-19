@@ -21,7 +21,6 @@ class Map {
 }
 
 
-
 class Parcelle {
   //Attributs d'une parcelle :
   this.Hauteur = 0;
