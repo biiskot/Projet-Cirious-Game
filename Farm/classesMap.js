@@ -10,8 +10,9 @@ class Map {
     //Initialiser toutes les cases en herbe :
     for (var i = 0; i < longueur.length; i++) {
       for (var j = 0; j < largeur.length; j++) {
-        this.tabMap[i][j] = new Parcelle(); // de base herbe dans le constructor de Parcelle()
+        this.tabMap[i][j] = new Parcelle(1,1); // de base herbe dans le constructor de Parcelle()
       }
+      afficherMap();
     }
 
   }
@@ -50,11 +51,6 @@ class Parcelle {
 
 }
 
-class ParcePlaceMachine extends Parcelle {
-
-}
-
-
 class ParceTerre extends Parcelle {
   constructor(){
     super(1,1);
@@ -62,9 +58,10 @@ class ParceTerre extends Parcelle {
     this.plantable = true;
   }
 
-  launchPousse(parcelledeterre){
-    parcelledeterre = new ParcePousse();
-    poussePlante(parcelledeterre);
+  launchPousse(graine, parcelledeterre){
+    //graine = new Carotte();
+    parcelledeterre = new ParcePousse(graine, parcelledeterre);
+
   }
 }
 
@@ -75,28 +72,29 @@ function wait(i) {
   }, 1000 * i); // fonction delay de 1 seconde
 }
 
-class ParcePousse extends ParceTerre {
+class ParcePousse extends Parcelle {
   this.graineChoisie;
   this.pousseFinie = false;
   this.timerPousse = 0;
 
-  constructor(graine){
-    super();
-    if(this.plantable == true){
-      this.appearance = 'pousses.png'
+  constructor(graine,parcelle){
+    super(1,1);
+    if(parcelle.plantable == true){
+      parcelle.appearance = 'pousses.png'
       this.graineChoisie = graine;
 
+      poussePlante(parcelle);
     }
 
     else {
-      console.log("Vous ne pouvez aps planter sur cette case");
+      console.log("Vous ne pouvez pas planter sur cette case");
     }
   }
 
   poussePlante(parcellequipousse){
-    while (this.timerPousse < this.graineChoisie.growTime) {
-    wait(i);
-     this.timerPousse++;
+    while (this.timerPousse < this.graineChoisie.growTime) { // Si le timer est inférieur au temps de pousse
+    wait(i); //attendre une seconde
+     this.timerPousse++; // timer += 1 seconde
   }
   this.pousseFinie = true;
   recolte(parcellequipousse); // Appel de la fonction qui change l'image de la parcelle et donne les récompenses
@@ -108,9 +106,9 @@ class ParcePousse extends ParceTerre {
 
       parcellePrete.onclick = function(){
         //joueur.solde += this.graineChoisie.reward; // ajoute au solde du joueur la récompense définie dans la classe de la graine
-        //joueur.inventaire // Nouvelle case tableau qui joute les carotte ou patates...
-
-      }; // Donne de l'argent et les ressources au joueur (fonction de la classe Player) au moment du clic sur la parcelle passée en parametre
+        //joueur.inventaire // Nouvelle case tableau qui ajoute les carotte ou patates...
+        console.log("récolte effectuée, or gagné :" + this.graineChoisie.reward + " nouveau solde = " + joueur.solde);
+      }; // Donne de l'argent et les ressources au joueur (classe Player) au moment du clic sur la parcelle passée en parametre
     }
   }
 
@@ -122,3 +120,5 @@ let Map1 = new Map(20,20);
 
 let testTerre = new ParceTerre();
 Map.placerParcelle(1,1,testTerre); // Place une parcelle de terre en (1,1)
+
+testTerre.launchPousse(new Carotte(), testTerre);
