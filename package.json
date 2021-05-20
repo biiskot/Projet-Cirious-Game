@@ -9,6 +9,7 @@
   "author": "etienne",
   "license": "ISC",
   "dependencies": {
+    "frames": "0.0.1",
     "phaser": "^3.53.1"
   }
 }

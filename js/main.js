@@ -1,12 +1,14 @@
-let player1 = new inventaire('bob');
+let player = new inventaire('bob');
 
-console.log(player1.pseudo);
-let Map1 = new Map(20,20,player1);
+console.log(player.pseudo);
+let Map1 = new Map(20,20, player);
 
 let testTerre = new ParceTerre();
-//Map.placerParcelle(1,1,testTerre); // Place une parcelle de terre en (1,1)
-testTerre.launchPousse(player1.carotte, testTerre);
 
+Map1.afficherMap();
+//Map1.placerParcelle(1,1,testTerre); // Place une parcelle de terre en (1,1)
+
+//testTerre.launchPousse(player.carotte, testTerre);
 
 /*
 console.log("nb blé : " + player.blé.nb_poss);
